@@ -1,0 +1,35 @@
+<root>
+        <test id="ip_forwarding" >
+                <name> Check IP forwarding </name>
+                <command>sysctl net.ipv4.ip_forward</command>
+        <expected_result>net.ipv4.ip_forward=1</expected_result>
+         </test>
+           
+         <test id="interface_check" >
+                <name> Check Interface up </name>
+                <command>cat /sys/class/net/eth0/operstate </command>
+        <expected_result>up</expected_result>
+         </test>
+          
+         <test id="ping">
+               <name> ping </name>
+               <command> ping -c 5 </command>
+          <expected_result>Host Unreachable</expected_result>     
+          </test>
+ 
+          <test id= "Forward chain -filter table">
+                <name> Checking forward Chain of filter table</name>
+               <command> iptables -t filter FORWARD -n</command>
+            <comment> if there are no policies then it forwards 
+                      without dropping</comment>
+            </test>
+
+          <test id= "IP tables nat">
+                <name> Checking nat tables</name>
+              <command> iptables -t nat -L -n</command>
+             <comment> if there are no policies then it forwards 
+                      without dropping</comment>
+           </test>
+
+</root>
+
