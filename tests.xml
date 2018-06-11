@@ -5,11 +5,21 @@
         <expected_result>net.ipv4.ip_forward=1</expected_result>
          </test>
            
-         <test id="interface_check" >
-                <name> Check Interface up </name>
-                <command>cat /sys/class/net/eth0/operstate </command>
-        <expected_result>up</expected_result>
-         </test>
+        
+   <test id="interface_check" run_test="yes">
+    <name>Test1 -- Connectivity</name>
+    <desc>Verify connectivity</desc>
+    <command>sysctl net.ipv4.ip_forward</command>
+    <expected_result>net.ipv4.ip_forward=1</expected_result>
+  </test>
+   
+   <test id="ip_forwarding" run_test="yes">
+    <name>Test1 -- Ip nat table</name>
+    <desc>Validate IP Forwarding</desc>
+    <command>iptables -t nat -L -n</command>
+    <expected_result not_empty="true"></expected_result>
+  </test>
+
           
          <test id="ping">
                <name> ping </name>
@@ -20,16 +30,11 @@
           <test id= "Forward chain -filter table">
                 <name> Checking forward Chain of filter table</name>
                <command> iptables -t filter FORWARD -n</command>
-            <comment> if there are no policies then it forwards 
-                      without dropping</comment>
+               <expected_result not_empty="true"></expected_result>
+            
             </test>
 
-          <test id= "IP tables nat">
-                <name> Checking nat tables</name>
-              <command> iptables -t nat -L -n</command>
-             <comment> if there are no policies then it forwards 
-                      without dropping</comment>
-           </test>
+          
 
 </root>
 
